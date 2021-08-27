@@ -5,5 +5,7 @@ object Constants {
     const val KEY_ID = "ID"
     const val KEY_UID = "KEY_UID"
     const val ACCOUNT_TYPE = "ACCOUNT_TYPE"
+    const val BASE_URL = "http://localhost:63342/Dett/"
+
 
 }

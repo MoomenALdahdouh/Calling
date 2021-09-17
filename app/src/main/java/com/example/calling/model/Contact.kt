@@ -1,6 +1,4 @@
 package com.example.calling.model
 
-class Contact(var name: String, var mobile: String) {
-    var image: String? = null
-
+class Contact(var id: Int, var admno: Int, var type: String, var phone: Int, var remark: String) {
 }

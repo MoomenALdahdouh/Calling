@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calling.R
 import com.example.calling.model.Contact
@@ -22,8 +23,9 @@ class ContactsAdapter(private val contactArrayList: ArrayList<Contact>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentContact: Contact = contactArrayList[position]
-        holder.name.setText(currentContact.name)
-        holder.mobile.setText(currentContact.mobile)
+        holder.type.text = currentContact.type
+        holder.phone.text = currentContact.phone.toString()
+        holder.remark.text = currentContact.remark
     }
 
     override fun getItemCount(): Int {
@@ -32,19 +34,24 @@ class ContactsAdapter(private val contactArrayList: ArrayList<Contact>) :
 
     inner class ViewHolder(itemView: View, listener: OnItemClickListener) :
         RecyclerView.ViewHolder(itemView) {
-        var name: TextView = itemView.findViewById(R.id.textView)
-        var mobile: TextView = itemView.findViewById(R.id.textView_number)
+        var type: TextView = itemView.findViewById(R.id.textView)
+        var phone: TextView = itemView.findViewById(R.id.textView_number)
+        var remark: TextView = itemView.findViewById(R.id.textView_remark)
         var icon: ImageView = itemView.findViewById(R.id.imageView_call)
+        var contactItem: ConstraintLayout = itemView.findViewById(R.id.contact_item_id)
 
         init {
             icon.setOnClickListener {
-                listener.onItemClick(adapterPosition)
+                listener.onItemClick(adapterPosition, icon.id)
+            }
+            contactItem.setOnClickListener {
+                listener.onItemClick(adapterPosition, contactItem.id)
             }
         }
     }
 
     interface OnItemClickListener {
-        fun onItemClick(position: Int)
+        fun onItemClick(position: Int, itemId: Int)
     }
 
     fun onItemSetOnClickListener(listener: OnItemClickListener) {

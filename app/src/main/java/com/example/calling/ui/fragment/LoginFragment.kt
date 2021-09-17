@@ -17,6 +17,7 @@ import com.example.calling.ui.activity.SplashActivity
 import com.example.calling.utils.Constants
 import com.example.calling.utils.PreferenceUtils
 import org.json.JSONException
+import org.json.JSONObject
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.collections.set
@@ -63,18 +64,26 @@ class LoginFragment : Fragment() {
                     Response.Listener<String?> {
                     override fun onResponse(response: String?) {
                         try {
-                            val text = response.toString()
-                            Toast.makeText(context, "Login", Toast.LENGTH_SHORT)
+                            val json = response.toString()
+                            val dataJson = JSONObject(json)
+                            val error = dataJson.getString("error")
+                            val message = dataJson.getString("message")
+                            val user = dataJson.getJSONObject("user")
+                            val userid = user.getString("userID")
+                            val time = user.getString("time")
+                            val balance = user.getString("balance")
+                            val adminNum = user.getString("admno")
+
+                            if (error.equals("false")) {
+                                PreferenceUtils.saveID(userid, context)
+                                PreferenceUtils.saveTime(time, context)
+                                PreferenceUtils.saveBalance(balance, context)
+                                PreferenceUtils.saveAdminNum(adminNum, context)
+                                startActivity(Intent(context, SplashActivity::class.java))
+                                activity?.finish()
+                            }
+                            Toast.makeText(context, "$message", Toast.LENGTH_SHORT)
                                 .show()
-                            PreferenceUtils.saveID(userID, context)
-                            startActivity(Intent(context, SplashActivity::class.java))
-                            activity?.finish()
-                            //val array = JSONArray(data)
-                            /*val person = JSONObject(response)
-                            val error = person.getString("error")
-                            val message = person.getString("message")
-                            Toast.makeText(context, "$error,,$message", Toast.LENGTH_SHORT).show()*/
-                            // print the output
                         } catch (e: JSONException) {
                             e.printStackTrace()
                         }
@@ -96,53 +105,6 @@ class LoginFragment : Fragment() {
 
             val requestQueue = Volley.newRequestQueue(context)
             requestQueue.add(request)
-
-            //creating volley string request
-            /*val stringRequest = @SuppressLint("ApplySharedPref")
-            object : StringRequest(Method.POST, Constants.LOGIN_URL,
-                Response.Listener { _ ->
-                    try {
-                        val jsonObject = JSONObject()
-                        val error = jsonObject.optString("error")
-                        if (error.equals("false")) {
-                            Toast.makeText(
-                                context,
-                                jsonObject.getString("message"),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            startActivity(Intent(context, MainActivity::class.java))
-                            activity?.finish()
-                        } else {
-                            Toast.makeText(
-                                context,
-                                jsonObject.getString("message"),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-                    }
-                    *//*try {
-                        Toast.makeText(context, "You are logged in", Toast.LENGTH_LONG).show()
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-                    }*//*
-                },
-                object : Response.ErrorListener {
-                    override fun onErrorResponse(volleyError: VolleyError) {
-                        Toast.makeText(context, volleyError.message, Toast.LENGTH_SHORT).show()
-                    }
-                }) {
-                @Throws(AuthFailureError::class)
-                override fun getParams(): Map<String, String> {
-                    val params = HashMap<String, String>()
-                    params["userID"] = userID
-                    params["password"] = password
-                    return params
-                }
-            }
-            //adding request to queue
-            VolleySingleton.instance?.addToRequestQueue(stringRequest)*/
         }
     }
 }

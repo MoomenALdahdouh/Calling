@@ -4,19 +4,6 @@ import android.content.Context
 import android.preference.PreferenceManager
 
 object PreferenceUtils {
-    fun saveName(name: String?, context: Context?): Boolean {
-        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val editor = preferences.edit()
-        editor.putString(Constants.KEY_NAME, name)
-        editor.apply()
-        return true
-    }
-
-    fun getName(context: Context?): String? {
-        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-        return preferences.getString(Constants.KEY_NAME, null)
-    }
-
     fun saveID(userId: String?, context: Context?): Boolean {
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         val editor = preferences.edit()
@@ -30,29 +17,43 @@ object PreferenceUtils {
         return preferences.getString(Constants.KEY_ID, null)
     }
 
-    fun saveUid(userUid: String?, context: Context?): Boolean {
+    fun saveTime(name: String?, context: Context?): Boolean {
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         val editor = preferences.edit()
-        editor.putString(Constants.KEY_UID, userUid)
+        editor.putString(Constants.KEY_TIME, name)
         editor.apply()
         return true
     }
 
-    fun getUid(context: Context?): String? {
+    fun getTime(context: Context?): String? {
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-        return preferences.getString(Constants.KEY_UID, null)
+        return preferences.getString(Constants.KEY_TIME, null)
     }
 
-    fun saveAccountType(accountType: String?, context: Context?): Boolean {
+    fun saveBalance(userUid: String?, context: Context?): Boolean {
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         val editor = preferences.edit()
-        editor.putString(Constants.ACCOUNT_TYPE, accountType)
+        editor.putString(Constants.KEY_BALANCE, userUid)
         editor.apply()
         return true
     }
 
-    fun getAccountType(context: Context?): String? {
+    fun getBalance(context: Context?): String? {
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-        return preferences.getString(Constants.ACCOUNT_TYPE, null)
+        return preferences.getString(Constants.KEY_BALANCE, null)
     }
+
+    fun saveAdminNum(userUid: String?, context: Context?): Boolean {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val editor = preferences.edit()
+        editor.putString(Constants.KEY_ADMIN_NUM, userUid)
+        editor.apply()
+        return true
+    }
+
+    fun getAdminNum(context: Context?): String? {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        return preferences.getString(Constants.KEY_ADMIN_NUM, null)
+    }
+
 }

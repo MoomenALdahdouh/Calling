@@ -12,7 +12,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="64dp"
         android:gravity="center"
-        android:text="Please enter your password to close the app"
+        android:text="Enter The Admin Number to close the app"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

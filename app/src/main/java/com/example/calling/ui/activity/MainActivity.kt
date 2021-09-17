@@ -37,13 +37,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        makeThisLauncherActivity()
+        val userID = PreferenceUtils.getID(this)
+        if (!userID.equals("")) {
+            fragment = CallFragment()
+            idMenu = R.menu.call_menu
+        } else {
+            fragment = LoginFragment()
+            idMenu = R.menu.login_menu
+        }
+        replaceFragment(fragment)
+    }
 
-        /*packageManager.clearPackagePreferredActivities(getPackageName())
-        val startMain = Intent(Intent.ACTION_MAIN)
-        startMain.addCategory(Intent.CATEGORY_HOME)
-        startMain.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(startMain)*/
-
+    private fun makeThisLauncherActivity() {
         if (!isMyLauncherDefault()) {
             val p = packageManager
             val cN = ComponentName(applicationContext, FakeHome::class.java)
@@ -61,15 +67,6 @@ class MainActivity : AppCompatActivity() {
                 PackageManager.DONT_KILL_APP
             )
         }
-        val userID = PreferenceUtils.getID(this)
-        if (!userID.equals("")) {
-            fragment = CallFragment()
-            idMenu = R.menu.call_menu
-        } else {
-            fragment = LoginFragment()
-            idMenu = R.menu.login_menu
-        }
-        replaceFragment(fragment)
     }
 
     private fun replaceFragment(fragment: Fragment) {
@@ -86,18 +83,18 @@ class MainActivity : AppCompatActivity() {
         val id = item.itemId
         if (id == R.id.logout_menu_id) {
             PreferenceUtils.saveID("", this@MainActivity)
+            PreferenceUtils.saveTime("", this@MainActivity)
+            PreferenceUtils.saveBalance("", this@MainActivity)
             Toast.makeText(this@MainActivity, "Logout", Toast.LENGTH_SHORT).show()
             startActivity(Intent(this@MainActivity, SplashActivity::class.java))
             finish()
         } else if (id == R.id.exit_menu_id) {
-            closeRequest()
+            closeCallRequest()
             Toast.makeText(this@MainActivity, "Exit", Toast.LENGTH_SHORT).show()
         }
         return super.onOptionsItemSelected(item)
     }
 
-    //TODO: Hi How are you :) Thank you I will continue the work so I wish you give me more time because the php mysql it's take a time
-    //TODO: here as you see so sorry for late 
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String?>,
@@ -132,7 +129,7 @@ class MainActivity : AppCompatActivity() {
         //super.onBackPressed()
     }
 
-    private fun closeRequest() {
+    private fun closeCallRequest() {
         val deleteDialogView: View =
             LayoutInflater.from(this@MainActivity).inflate(R.layout.close_app, null)
         val passwordEditText = deleteDialogView.findViewById<EditText>(R.id.editTextTextPassword)
@@ -146,13 +143,15 @@ class MainActivity : AppCompatActivity() {
         val alertDialog = dialogBuilder.create()
         okButton.setOnClickListener {
             val password = passwordEditText.text.toString().trim { it <= ' ' }
-            if (password == "admin123") {
+            val adminNum = PreferenceUtils.getAdminNum(this@MainActivity)
+            if (password.equals(adminNum)) {
                 packageManager.clearPackagePreferredActivities(getPackageName())
                 //packageManager.clearInstantAppCookie()
                 val intent = Intent(Intent.ACTION_MAIN)
                 intent.addCategory(Intent.CATEGORY_HOME)
                 //intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
+                PreferenceUtils.saveAdminNum("", applicationContext)
                 alertDialog.dismiss()
             } else {
                 wrongPassword.visibility = View.VISIBLE
@@ -164,7 +163,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if ((keyCode == KeyEvent.KEYCODE_BACK) || (keyCode == KeyEvent.KEYCODE_HOME) || (keyCode == KeyEvent.KEYCODE_MENU)) {
-            closeRequest()
+            closeCallRequest()
         }
         return super.onKeyDown(keyCode, event)
     }
@@ -179,17 +178,4 @@ class MainActivity : AppCompatActivity() {
         )!!.activityInfo.packageName
         return str == packageName
     }
-
-    /*override fun onDestroy() {
-        val userID = PreferenceUtils.getID(this)
-        if (!userID.equals("")) {
-            fragment = CallFragment()
-            idMenu = R.menu.call_menu
-        } else {
-            fragment = LoginFragment()
-            idMenu = R.menu.login_menu
-        }
-        replaceFragment(fragment)
-        super.onDestroy()
-    }*/
 }

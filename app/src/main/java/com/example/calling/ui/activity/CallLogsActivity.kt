@@ -17,7 +17,6 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
 import kotlin.collections.HashMap
-import kotlin.collections.Map
 import kotlin.collections.set
 
 class CallLogsActivity : AppCompatActivity() {
@@ -52,8 +51,8 @@ class CallLogsActivity : AppCompatActivity() {
                         val dataJson = JSONObject(json)
                         val error = dataJson.getString("error")
                         //val message = dataJson.getString("message")
-                        val jsonArray = dataJson.getJSONArray("callLogs")
                         if (error.equals("false")) {
+                            val jsonArray = dataJson.getJSONArray("callLogs")
                             for (i in 0 until jsonArray.length()) {
                                 try {
                                     val jsonObject = jsonArray.getJSONObject(i)

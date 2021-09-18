@@ -68,19 +68,23 @@ class LoginFragment : Fragment() {
                             val dataJson = JSONObject(json)
                             val error = dataJson.getString("error")
                             val message = dataJson.getString("message")
-                            val user = dataJson.getJSONObject("user")
-                            val userid = user.getString("userID")
-                            val time = user.getString("time")
-                            val balance = user.getString("balance")
-                            val adminNum = user.getString("admno")
 
                             if (error.equals("false")) {
+                                val user = dataJson.getJSONObject("user")
+                                val userid = user.getString("userID")
+                                val time = user.getString("time")
+                                val balance = user.getString("balance")
+                                val adminNum = user.getString("admno")
+                                binding.textViewWrong.visibility = View.GONE
                                 PreferenceUtils.saveID(userid, context)
                                 PreferenceUtils.saveTime(time, context)
                                 PreferenceUtils.saveBalance(balance, context)
                                 PreferenceUtils.saveAdminNum(adminNum, context)
                                 startActivity(Intent(context, SplashActivity::class.java))
                                 activity?.finish()
+                            } else {
+                                binding.textViewWrong.text = message
+                                binding.textViewWrong.visibility = View.VISIBLE
                             }
                             Toast.makeText(context, "$message", Toast.LENGTH_SHORT)
                                 .show()
@@ -102,7 +106,6 @@ class LoginFragment : Fragment() {
                         return params
                     }
                 }
-
             val requestQueue = Volley.newRequestQueue(context)
             requestQueue.add(request)
         }

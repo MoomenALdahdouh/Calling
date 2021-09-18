@@ -30,6 +30,7 @@ import com.example.calling.adapter.ContactsAdapter
 import com.example.calling.databinding.FragmentCallBinding
 import com.example.calling.model.Contact
 import com.example.calling.ui.activity.CallLogsActivity
+import com.example.calling.ui.activity.LogoutActivity
 import com.example.calling.ui.activity.PhoneStateChangeListener
 import com.example.calling.utils.Constants
 import com.example.calling.utils.PreferenceUtils
@@ -63,6 +64,7 @@ class CallFragment : Fragment() {
         getAllContacts(contactArrayList)
         userInfo()
         getCallLogs()
+        exitApp()
     }
 
     private fun getCallLogs() {
@@ -230,7 +232,7 @@ class CallFragment : Fragment() {
                             jsonObject.getInt("id"),
                             jsonObject.getInt("admno"),
                             jsonObject.getString("type"),
-                            jsonObject.getInt("phone"),
+                            jsonObject.getString("phone"),
                             jsonObject.getString("remark")
                         )
                         contactArrayList.add(contact)
@@ -324,13 +326,13 @@ class CallFragment : Fragment() {
                         val dataJson = JSONObject(json)
                         val error = dataJson.getString("error")
                         val message = dataJson.getString("message")
-                        val user = dataJson.getJSONObject("user")
-                        val userid = user.getString("userID")
-                        val time = user.getString("time")
-                        val balance = user.getString("balance")
-                        val adminNum = user.getString("admno")
 
                         if (error.equals("false")) {
+                            val user = dataJson.getJSONObject("user")
+                            val userid = user.getString("userID")
+                            val time = user.getString("time")
+                            val balance = user.getString("balance")
+                            val adminNum = user.getString("admno")
                             PreferenceUtils.saveID(userid, context)
                             PreferenceUtils.saveTime(time, context)
                             PreferenceUtils.saveBalance(balance, context)
@@ -359,6 +361,12 @@ class CallFragment : Fragment() {
 
         val requestQueue = Volley.newRequestQueue(context)
         requestQueue.add(request)
+    }
+
+    private fun exitApp() {
+        binding.imageViewExit.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(context, LogoutActivity::class.java))
+        })
     }
 
 }

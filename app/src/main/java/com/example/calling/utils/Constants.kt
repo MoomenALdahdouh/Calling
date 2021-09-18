@@ -17,6 +17,7 @@ object Constants {
     const val UPDATE_USER_URL = BASE_URL + "updateUser.php"
     const val ADD_PHONE_LOG = BASE_URL + "addPhoneLog.php"
     const val GET_PHONE_LOG = BASE_URL + "getContactsLogs.php"
+    const val CHECK_ADMIN_PASSWORD = BASE_URL + "checkAdmin.php"
 
     //val AUTH = "Basic" + Base64.encodeToString("moomen:9124279".toByteArray(), Base64.NO_WRAP)
     val AUTH = "Basic" + Base64.encodeToString(

@@ -23,7 +23,7 @@
         android:theme="@style/Theme.Calling"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.activity.LogoutActivity"
+            android:name=".ui.activity.ExitActivity"
             android:theme="@style/Theme.Exit" />
         <activity android:name=".ui.activity.CallLogsActivity" />
         <activity android:name=".ui.activity.LoginActivity" />

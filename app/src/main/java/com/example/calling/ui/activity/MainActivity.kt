@@ -30,7 +30,6 @@ import com.example.calling.utils.PreferenceUtils
 import org.json.JSONException
 import org.json.JSONObject
 
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -47,7 +46,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         makeThisLauncherActivity()
         val userID = PreferenceUtils.getID(this)
-        if (!userID.equals("")) {
+        Toast.makeText(applicationContext,userID,Toast.LENGTH_LONG).show();
+        if (!userID!!.isEmpty()) {
             fragment = CallFragment()
             idMenu = R.menu.call_menu
         } else {

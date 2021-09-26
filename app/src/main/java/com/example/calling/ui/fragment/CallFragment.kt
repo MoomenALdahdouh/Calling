@@ -29,9 +29,7 @@ import com.example.calling.R
 import com.example.calling.adapter.ContactsAdapter
 import com.example.calling.databinding.FragmentCallBinding
 import com.example.calling.model.Contact
-import com.example.calling.ui.activity.CallLogsActivity
-import com.example.calling.ui.activity.LogoutActivity
-import com.example.calling.ui.activity.PhoneStateChangeListener
+import com.example.calling.ui.activity.*
 import com.example.calling.utils.Constants
 import com.example.calling.utils.PreferenceUtils
 import org.json.JSONException
@@ -65,6 +63,7 @@ class CallFragment : Fragment() {
         userInfo()
         getCallLogs()
         exitApp()
+        logoutApp()
     }
 
     private fun getCallLogs() {
@@ -364,8 +363,19 @@ class CallFragment : Fragment() {
     }
 
     private fun exitApp() {
-        binding.imageViewExit.setOnClickListener(View.OnClickListener {
-            startActivity(Intent(context, LogoutActivity::class.java))
+        binding.buttonExit.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(context, ExitActivity::class.java))
+        })
+    }
+
+    private fun logoutApp() {
+        binding.buttonSignOut.setOnClickListener(View.OnClickListener {
+            PreferenceUtils.saveAdminNum("",context);
+            PreferenceUtils.saveID("",context);
+            PreferenceUtils.saveBalance("",context);
+            PreferenceUtils.saveTime("",context);
+            startActivity(Intent(context, SplashActivity::class.java))
+            activity?.finish()
         })
     }
 

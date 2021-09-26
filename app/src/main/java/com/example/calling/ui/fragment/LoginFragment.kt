@@ -13,6 +13,7 @@ import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.calling.databinding.FragmentLoginBinding
+import com.example.calling.ui.activity.ExitActivity
 import com.example.calling.ui.activity.SplashActivity
 import com.example.calling.utils.Constants
 import com.example.calling.utils.PreferenceUtils
@@ -21,18 +22,11 @@ import org.json.JSONObject
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.collections.set
+import kotlin.math.log
 
 
 class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +39,11 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        exitApp()
+        login()
+    }
+
+    private fun login(){
         binding.buttonLoginId.setOnClickListener {
             val userID = binding.editTextUserID.text.toString().trim()
             val password = binding.editTextUserPassword.text.toString().trim()
@@ -109,5 +108,12 @@ class LoginFragment : Fragment() {
             val requestQueue = Volley.newRequestQueue(context)
             requestQueue.add(request)
         }
+
+    }
+
+    private fun exitApp() {
+        binding.buttonExit.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(context, ExitActivity::class.java))
+        })
     }
 }

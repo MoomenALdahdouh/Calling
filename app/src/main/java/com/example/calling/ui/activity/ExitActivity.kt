@@ -10,18 +10,19 @@ import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.calling.databinding.ActivityLogoutBinding
+import com.example.calling.databinding.ActivityExitBinding
 import com.example.calling.utils.Constants
+import com.example.calling.utils.PreferenceUtils
 import org.json.JSONException
 import org.json.JSONObject
 
-class LogoutActivity : AppCompatActivity() {
+class ExitActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityLogoutBinding
+    private lateinit var binding: ActivityExitBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLogoutBinding.inflate(layoutInflater)
+        binding = ActivityExitBinding.inflate(layoutInflater)
         setContentView(binding.root)
         exitTheApp()
     }
@@ -49,6 +50,7 @@ class LogoutActivity : AppCompatActivity() {
                         val error = dataJson.getString("error")
                         val message = dataJson.getString("message")
                         if (error.equals("false")) {
+                            logoutApp()
                             val admin = dataJson.getJSONObject("admin")
                             val adminPassword = admin.getString("password")
                             packageManager.clearPackagePreferredActivities(packageName)
@@ -82,5 +84,13 @@ class LogoutActivity : AppCompatActivity() {
             }
         val requestQueue = Volley.newRequestQueue(applicationContext)
         requestQueue.add(request)
+    }
+
+    private fun logoutApp() {
+        PreferenceUtils.saveAdminNum("", applicationContext);
+        PreferenceUtils.saveID("", applicationContext);
+        PreferenceUtils.saveBalance("", applicationContext);
+        PreferenceUtils.saveTime("", applicationContext);
+        startActivity(Intent(applicationContext, SplashActivity::class.java))
     }
 }

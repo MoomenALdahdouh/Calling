@@ -39,20 +39,20 @@ class MainActivity : AppCompatActivity() {
     private var idMenu = R.menu.call_menu
     private val REQUEST_CALL = 1
     private val mobile: String = ""
-
+    private var userID = "";
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         makeThisLauncherActivity()
-        val userID = PreferenceUtils.getID(this)
-        Toast.makeText(applicationContext,userID,Toast.LENGTH_LONG).show();
-        if (!userID!!.isEmpty()) {
-            fragment = CallFragment()
-            idMenu = R.menu.call_menu
-        } else {
+        userID = PreferenceUtils.getID(this).toString()
+        //Toast.makeText(applicationContext,userID,Toast.LENGTH_LONG).show();
+        if (userID.isEmpty() || userID == "null") {
             fragment = LoginFragment()
             idMenu = R.menu.login_menu
+        } else {
+            fragment = CallFragment()
+            idMenu = R.menu.call_menu
         }
         replaceFragment(fragment)
     }

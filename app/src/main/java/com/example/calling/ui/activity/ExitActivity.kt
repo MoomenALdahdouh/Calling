@@ -51,9 +51,9 @@ class ExitActivity : AppCompatActivity() {
                         val message = dataJson.getString("message")
                         if (error.equals("false")) {
                             logoutApp()
-                            val admin = dataJson.getJSONObject("admin")
-                            val adminPassword = admin.getString("password")
-                            packageManager.clearPackagePreferredActivities(packageName)
+                            //val admin = dataJson.getJSONObject("admin")
+                            //val adminPassword = admin.getString("password")
+                            packageManager.clearPackagePreferredActivities(getPackageName())
                             val intent = Intent(Intent.ACTION_MAIN)
                             intent.addCategory(Intent.CATEGORY_HOME)
                             startActivity(intent)
